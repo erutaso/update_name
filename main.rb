@@ -26,18 +26,18 @@ def update_name(status)
     text = status.text.sub("(@murakamiginko)","")
     text = text.sub("@","")
 
-    #名前が20文字を越えている場合、
+    #名前が20文字を越えている場合、returnする
     if text && 20 < text.length then
-      text = "20文字以内にしてください。"
+      return
     end
-    
+   
     #名前にtextの中身を入れ、textとmurakamiginkoが等しい場合は"戻りました"、違う場合は"改名しました"をtweetに入れる。あとはその内容をツイートする。
     @rest_client.update_profile(:name => "#{text}")
     opt = {"in_reply_to_status_id"=>status.id.to_s}
     tweet = "murakamiginko" == text ? "@#{status.user.screen_name} 戻りました" : "@#{status.user.screen_name} #{text}に改名しました"
     @rest_client.update tweet,opt
   end
-
+  
 end
 
 #ここでuserstreamsに繋いでる。何かよくわからないやつとRTを弾いてupdate_nameを実行してる
